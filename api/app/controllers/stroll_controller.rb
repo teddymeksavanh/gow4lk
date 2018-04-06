@@ -1,0 +1,2 @@
+class StrollController < ApplicationController
+end
