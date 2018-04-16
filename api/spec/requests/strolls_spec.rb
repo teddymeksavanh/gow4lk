@@ -51,35 +51,35 @@ RSpec.describe 'Strolls API', type: :request do
   end
 
   # Test suite for POST /strolls
-  # describe 'POST /strolls' do
+  describe 'POST /strolls' do
     # valid payload
-  #   let(:valid_attributes) { { title: 'Mugiwara', created_by: '1' } }
-  #
-  #   context 'when the request is valid' do
-  #     before { post '/strolls', params: valid_attributes }
-  #
-  #     it 'creates a stroll' do
-  #       expect(json['title']).to eq('Mugiwara')
-  #     end
-  #
-  #     it 'returns status code 201' do
-  #       expect(response).to have_http_status(201)
-  #     end
-  #   end
-  #
-  #   context 'when the request is invalid' do
-  #     before { post '/strolls', params: { title: 'Mugiwara' } }
-  #
-  #     it 'returns status code 422' do
-  #       expect(response).to have_http_status(422)
-  #     end
-  #
-  #     it 'returns a validation failure message' do
-  #       expect(response.body)
-  #         .to match(/Validation failed: Created by can't be blank/)
-  #     end
-  #   end
-  # end
+    let(:valid_attributes) { { title: 'Mugiwara', created_by: '1' } }
+
+    context 'when the request is valid' do
+      before { post '/strolls', params: valid_attributes }
+
+      it 'creates a stroll' do
+        expect(json['title']).to eq('Mugiwara')
+      end
+
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when the request is invalid' do
+      before { post '/strolls', params: { title: 'Mugiwara' } }
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'returns a validation failure message' do
+        expect(response.body)
+          .to match(/Validation failed: Created by can't be blank/)
+      end
+    end
+  end
 
   # Test suite for PUT /strolls/:id
   describe 'PUT /strolls/:id' do

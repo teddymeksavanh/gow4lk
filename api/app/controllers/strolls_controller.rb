@@ -10,7 +10,7 @@ class StrollsController < ApplicationController
 
   # POST /strolls
   def create
-    @todo = Stroll.create!(stroll_params)
+    @stroll = Stroll.create!(stroll_params)
     json_response(@stroll, :created)
   end
 
