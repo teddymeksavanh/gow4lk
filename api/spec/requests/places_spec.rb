@@ -57,6 +57,9 @@ RSpec.describe 'Places API' do
       end
 
       it 'returns a not found message' do
+          puts "lol"
+          puts response.body
+          puts response
         expect(response.body).to match(/Couldn't find Places/)
       end
     end
@@ -64,7 +67,7 @@ RSpec.describe 'Places API' do
 
   # Test suite for PUT /strolls/:stroll_id/places
   describe 'POST /strolls/:stroll_id/places' do
-    let(:valid_attributes) { { name: 'Visit Narnia', done: false } }
+    let(:valid_attributes) { { name: 'Visit Narnia' } }
 
     context 'when request attributes are valid' do
       before { post "/strolls/#{stroll_id}/places", params: valid_attributes }
