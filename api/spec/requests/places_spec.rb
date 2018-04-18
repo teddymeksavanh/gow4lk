@@ -57,10 +57,7 @@ RSpec.describe 'Places API' do
       end
 
       it 'returns a not found message' do
-          puts "lol"
-          puts response.body
-          puts response
-        expect(response.body).to match(/Couldn't find Places/)
+        expect(response.body).to match(/Couldn't find Place/)
       end
     end
   end
