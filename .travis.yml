@@ -2,8 +2,6 @@ language: ruby
 dist: trusty
 rvm:
     - 2.2
-    - jruby
-    - 2.0.0-p24
 before_install:
     - cd api
 scripts:
