@@ -4,13 +4,15 @@ class StrollsController < ApplicationController
 
   # GET /strolls
   def index
-    @strolls = Stroll.all
-    json_response(@strolls)
+   # get current user strolls
+   @strolls = current_user.strolls
+   json_response(@strolls)
   end
 
   # POST /strolls
   def create
-    @stroll = Stroll.create!(stroll_params)
+    # create strolls belonging to current user
+    @stroll = current_user.strolls.create!(stroll_params)
     json_response(@stroll, :created)
   end
 
@@ -33,9 +35,9 @@ class StrollsController < ApplicationController
 
   private
 
+  # remove `created_by` from list of permitted parameters
   def stroll_params
-    # whitelist params
-    params.permit(:title, :created_by)
+    params.permit(:title)
   end
 
   def set_stroll

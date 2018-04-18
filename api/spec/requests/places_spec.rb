@@ -2,15 +2,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Places API' do
-  # Initialize the test data
-  let!(:stroll) { create(:stroll) }
+  let(:user) { create(:user) }
+  let!(:stroll) { create(:stroll, created_by: user.id) }
   let!(:places) { create_list(:place, 20, stroll_id: stroll.id) }
   let(:stroll_id) { stroll.id }
   let(:id) { places.first.id }
+  let(:headers) { valid_headers }
 
   # Test suite for GET /strolls/:stroll_id/places
   describe 'GET /strolls/:stroll_id/places' do
-    before { get "/strolls/#{stroll_id}/places" }
+    before { get "/strolls/#{stroll_id}/places", params: {}, headers: headers }
 
     context 'when stroll exists' do
       it 'returns status code 200' do
@@ -37,7 +38,7 @@ RSpec.describe 'Places API' do
 
   # Test suite for GET /strolls/:stroll_id/places/:id
   describe 'GET /strolls/:stroll_id/places/:id' do
-    before { get "/strolls/#{stroll_id}/places/#{id}" }
+    before { get "/strolls/#{stroll_id}/places/#{id}", params: {}, headers: headers }
 
     context 'when stroll place exists' do
       it 'returns status code 200' do
@@ -64,19 +65,19 @@ RSpec.describe 'Places API' do
 
   # Test suite for PUT /strolls/:stroll_id/places
   describe 'POST /strolls/:stroll_id/places' do
-    let(:valid_attributes) { { name: 'Visit Narnia' } }
+    let(:valid_attributes) { { name: 'Visit Narnia' }.to_json }
 
     context 'when request attributes are valid' do
-      before { post "/strolls/#{stroll_id}/places", params: valid_attributes }
-
+      before do
+        post "/strolls/#{stroll_id}/places", params: valid_attributes, headers: headers
+      end
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
       end
     end
 
     context 'when an invalid request' do
-      before { post "/strolls/#{stroll_id}/places", params: {} }
-
+      before { post "/strolls/#{stroll_id}/places", params: {}, headers: headers }
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
@@ -89,9 +90,11 @@ RSpec.describe 'Places API' do
 
   # Test suite for PUT /strolls/:stroll_id/places/:id
   describe 'PUT /strolls/:stroll_id/places/:id' do
-    let(:valid_attributes) { { name: 'Mozart' } }
+    let(:valid_attributes) { { name: 'Mozart' }.to_json }
 
-    before { put "/strolls/#{stroll_id}/places/#{id}", params: valid_attributes }
+    before do
+     put "/strolls/#{stroll_id}/places/#{id}", params: valid_attributes, headers: headers
+    end
 
     context 'when place exists' do
       it 'returns status code 204' do
@@ -119,7 +122,7 @@ RSpec.describe 'Places API' do
 
   # Test suite for DELETE /strolls/:id
   describe 'DELETE /strolls/:id' do
-    before { delete "/strolls/#{stroll_id}/places/#{id}" }
+    before { delete "/strolls/#{stroll_id}/places/#{id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
