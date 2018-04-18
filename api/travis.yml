@@ -1,0 +1,18 @@
+language: ruby
+dist: trusty
+rvm:
+    - 2.2
+    - jruby
+    - 2.0.0-p24
+scripts:
+    - bundle exec rspec
+# cache:
+#   directories:
+#   - "./node_modules"
+# deploy:
+#   provider: heroku
+#   api_key:
+#     secure: kse/zvKnYOkNOnEKCvn+CueSsmT4EM+hHYkWYCu5hhPo84W7kg+bygjKmKNPt3cB2LK0ux42AACrp43NxJT1Sl7cdJr4C3A/UW+dyEAD8IuYsW5ZIhKa7q/w0rVYRq2xfIFuQQnwzRHf7NRhTAmvpotMm/t9Os3Tt3lzTVNWVuMLP8juYWw3RDIBPxC55X3VyGkCISuIyztjkMIj34+Sr+cWpj1J4agIaFik5gzyhbpM1X5B092iXbW7dwLWn+4ivIbSKgNUgpw7aSCOXHTw0NKHEyykKJsOm/PekSEiofLpanLN/r+gFWn1sbBfawO55Zo2indHQSYT/UjHzRnCZlNHH4skCUKvyQrNfA+YLbJVz/4rFOO2ZMu5T48GQlB/Sfei6DrPA8sooTaE0lNTWCMXalj9A++w+F9Bl79e6YS/wp79IGzbxGSIkIn/NSciKBqfrKT+M1UrHc4b6A7OGW7SGejv3N2okUm7PT9qVJ8WusjNmhouhmmJOCMWOqw3vregb2kT9+xXkrKVFHrP4RpAtmpGtQcI2bpcEmmMkbMkqiKzZyWGGJXNOZYI1ZBoFuKtJXED43skv9P/ny2j1CPY8mpDghYE76ESeMN6WDNjRqL4/8sfPtoRFJtwcc1D+nqDOvZkgJQe7nv5JpZ+KyJxOttuSlWj9xf+0/o1z34=
+#   app: pokemongng2
+#   on:
+#     repo: teddymeksavanh/PokemonNG2T
