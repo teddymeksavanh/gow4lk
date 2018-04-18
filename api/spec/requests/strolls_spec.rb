@@ -2,14 +2,18 @@
 require 'rails_helper'
 
 RSpec.describe 'Strolls API', type: :request do
-  # initialize test data
-  let!(:strolls) { create_list(:stroll, 10) }
+  # add strolls owner
+  let(:user) { create(:user) }
+  let!(:strolls) { create_list(:stroll, 10, created_by: user.id) }
   let(:stroll_id) { strolls.first.id }
+  # authorize request
+  let(:headers) { valid_headers }
 
   # Test suite for GET /strolls
   describe 'GET /strolls' do
     # make HTTP get request before each example
-    before { get '/strolls' }
+    # update request with headers
+    before { get '/strolls', params: {}, headers: headers }
 
     it 'returns strolls' do
       # Note `json` is a custom helper to parse JSON responses
@@ -24,7 +28,7 @@ RSpec.describe 'Strolls API', type: :request do
 
   # Test suite for GET /strolls/:id
   describe 'GET /strolls/:id' do
-    before { get "/strolls/#{stroll_id}" }
+    before { get "/strolls/#{stroll_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
       it 'returns the stroll' do
@@ -53,10 +57,13 @@ RSpec.describe 'Strolls API', type: :request do
   # Test suite for POST /strolls
   describe 'POST /strolls' do
     # valid payload
-    let(:valid_attributes) { { title: 'Mugiwara', created_by: '1' } }
+    let(:valid_attributes) do
+      # send json payload
+      { title: 'Mugiwara', created_by: user.id.to_s }.to_json
+    end
 
     context 'when the request is valid' do
-      before { post '/strolls', params: valid_attributes }
+      before { post '/strolls', params: valid_attributes, headers: headers }
 
       it 'creates a stroll' do
         expect(json['title']).to eq('Mugiwara')
@@ -68,25 +75,26 @@ RSpec.describe 'Strolls API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/strolls', params: { title: 'Mugiwara' } }
+        let(:invalid_attributes) { { title: nil }.to_json }
+        before { post '/strolls', params: invalid_attributes, headers: headers }
 
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
-      end
+        it 'returns status code 422' do
+          expect(response).to have_http_status(422)
+        end
 
-      it 'returns a validation failure message' do
-        expect(response.body)
-          .to match(/Validation failed: Created by can't be blank/)
-      end
+        it 'returns a validation failure message' do
+          expect(json['message'])
+            .to match(/Validation failed: Title can't be blank/)
+        end
     end
   end
 
   # Test suite for PUT /strolls/:id
   describe 'PUT /strolls/:id' do
-    let(:valid_attributes) { { title: 'Shopping' } }
+    let(:valid_attributes) { { title: 'Shopping' }.to_json }
 
     context 'when the record exists' do
-      before { put "/strolls/#{stroll_id}", params: valid_attributes }
+      before { put "/strolls/#{stroll_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -100,7 +108,7 @@ RSpec.describe 'Strolls API', type: :request do
 
   # Test suite for DELETE /strolls/:id
   describe 'DELETE /strolls/:id' do
-    before { delete "/strolls/#{stroll_id}" }
+    before { delete "/strolls/#{stroll_id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
